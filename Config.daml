@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArcGIS defaultAssembly="BufferToolPlugin.dll" 
+        defaultNamespace="BufferToolPlugin" 
+        xmlns="http://schemas.esri.com/DAML/2005" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:schemaLocation="http://schemas.esri.com/DAML/2005 file:///C:/Program%20Files/ArcGIS/Pro/bin/ArcGIS.Desktop.Framework.xsd">
+  
+  <AddInInfo id="{85D4973B-BD0A-4CAE-9E45-CD6F756D2372}" 
+             version="1.0" 
+             desktopVersion="3.6.0.59527">
+    <Name>Buffer Tool Plugin</Name>
+    <Description>Custom buffer analysis tools for ArcGIS Pro 3.6</Description>
+    <Image>Images\AddinDesktop32.png</Image>
+    <Author>Hafiz</Author>
+    <Company>Custom Development</Company>
+    <Date>11/16/2025</Date>
+    <Subject>Geoprocessing, Analysis</Subject>
+    <Target>ArcGISPro</Target>
+  </AddInInfo>
+  
+  <modules>
+    <insertModule id="BufferToolPlugin_Module" 
+                  className="Module1" 
+                  autoLoad="false" 
+                  caption="Buffer Tool Plugin">
+      
+      <!-- Custom Tab -->
+      <tabs>
+        <tab id="BufferToolPlugin_Tab1" 
+             caption="Buffer Tools" 
+             keytip="BT">
+          <group refID="BufferToolPlugin_Group1"/>
+        </tab>
+      </tabs>
+      
+      <!-- Groups -->
+      <groups>
+        <group id="BufferToolPlugin_Group1" 
+               caption="Analysis Tools" 
+               appearsOnAddInTab="false" 
+               keytip="AG">
+          <!-- Interactive Buffer Button -->
+          <button refID="BufferToolPlugin_BufferTool" size="large"/>
+          <!-- Buffer Selected Layer Button -->
+          <button refID="BufferToolPlugin_BufferButton" size="large"/>
+        </group>
+      </groups>
+      
+      <!-- Controls -->
+      <controls>
+        <!-- Interactive Buffer Button -->
+        <button id="BufferToolPlugin_BufferTool" 
+                className="BufferTool" 
+                caption="Interactive Buffer" 
+                condition="esri_mapping_mapPane"
+                keytip="IT"
+                loadOnClick="true" 
+                smallImage="Images\BufferTool16.png" 
+                largeImage="Images\BufferTool32.png">
+          <tooltip heading="Interactive Buffer Tool">
+            Click to create a buffer at the current map center.
+            <disabledText>Open a map view to use this tool.</disabledText>
+          </tooltip>
+        </button>
+        
+        <!-- Buffer Selected Layer Button -->
+        <button id="BufferToolPlugin_BufferButton" 
+                className="BufferButton" 
+                caption="Buffer Selected Layer" 
+                condition="esri_mapping_mapPane"
+                keytip="BL"
+                loadOnClick="true"
+                smallImage="Images\BufferButton16.png" 
+                largeImage="Images\BufferButton32.png">
+          <tooltip heading="Buffer Selected Layer">
+            Creates a buffer around all features in the selected layer.
+            Select a feature layer in the Contents pane before clicking.
+            <disabledText>Open a map view to use this tool.</disabledText>
+          </tooltip>
+        </button>
+      </controls>
+      
+    </insertModule>
+  </modules>
+  
+</ArcGIS>

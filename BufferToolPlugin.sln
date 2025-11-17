@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11206.111 d18.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BufferToolPlugin", "BufferToolPlugin.csproj", "{DD5B9C3A-4BC2-7293-1D89-D9A08F593CCA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DD5B9C3A-4BC2-7293-1D89-D9A08F593CCA}.Debug|x64.ActiveCfg = Debug|x64
+		{DD5B9C3A-4BC2-7293-1D89-D9A08F593CCA}.Debug|x64.Build.0 = Debug|x64
+		{DD5B9C3A-4BC2-7293-1D89-D9A08F593CCA}.Release|x64.ActiveCfg = Release|x64
+		{DD5B9C3A-4BC2-7293-1D89-D9A08F593CCA}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {350388E0-8341-4170-AD20-3CA20F1A1E74}
+	EndGlobalSection
+EndGlobal

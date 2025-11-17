@@ -1,0 +1,3 @@
+/* Placeholder for BufferTool32.png (32x32 icon) */
+/* Replace this file with an actual 32x32 PNG image for the Interactive Buffer Tool */
+/* Recommended: Blue/cyan circular buffer icon */

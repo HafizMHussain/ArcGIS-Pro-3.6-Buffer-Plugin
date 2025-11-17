@@ -1,0 +1,116 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <OutputType>Library</OutputType>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <PlatformTarget>x64</PlatformTarget>
+    <Platforms>x64</Platforms>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <ProAssemblyPath Condition="'$(ProAssemblyPath)' == ''">C:\Program Files\ArcGIS\Pro\bin</ProAssemblyPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Program Files\ArcGIS\Pro\bin\ArcGISPro.exe</StartProgram>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="ArcGIS.Core">
+      <HintPath>$(ProAssemblyPath)\ArcGIS.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ArcGIS.CoreHost">
+      <HintPath>$(ProAssemblyPath)\ArcGIS.CoreHost.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ArcGIS.Desktop.Framework">
+      <HintPath>$(ProAssemblyPath)\ArcGIS.Desktop.Framework.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ArcGIS.Desktop.Core">
+      <HintPath>$(ProAssemblyPath)\Extensions\Core\ArcGIS.Desktop.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ArcGIS.Desktop.Mapping">
+      <HintPath>$(ProAssemblyPath)\Extensions\Mapping\ArcGIS.Desktop.Mapping.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ArcGIS.Desktop.Editing">
+      <HintPath>$(ProAssemblyPath)\Extensions\Editing\ArcGIS.Desktop.Editing.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ArcGIS.Desktop.Catalog">
+      <HintPath>$(ProAssemblyPath)\Extensions\Catalog\ArcGIS.Desktop.Catalog.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="ESRI.ArcGIS.ItemIndex">
+      <HintPath>$(ProAssemblyPath)\ESRI.ArcGIS.ItemIndex.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AddInContent Include="Config.daml" />
+    <AddInContent Include="Images\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Config.daml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="ReadMe.md" />
+  </ItemGroup>
+
+  <Target Name="AfterClean">
+    <!-- Override AfterClean to delete only specific files -->
+    <Message Text="Deleting: $(OutDir)$(AssemblyName).dll.config" Importance="high" />
+    <Delete Files="$(OutDir)$(AssemblyName).dll.config" />
+  </Target>
+
+  <PropertyGroup>
+    <ZipDir Condition="'$(ZipDir)' == ''">$(MSBuildThisFileDirectory)</ZipDir>
+  </PropertyGroup>
+
+  <Target Name="CreateEsriAddinX" AfterTargets="AfterBuild" Condition="'$(ConfigurationName)' == 'Release'">
+    <ItemGroup>
+      <AddinFiles Include="$(OutDir)**\*.*" Exclude="$(OutDir)*.pdb;$(OutDir)*.xml;$(OutDir)*.dll.config" />
+    </ItemGroup>
+    <Copy SourceFiles="@(AddinFiles)" DestinationFolder="$(ZipDir)Install\%(RecursiveDir)" />
+    <CreateItem Include="$(ZipDir)Install\**\*.*">
+      <Output TaskParameter="Include" ItemName="ZipFiles" />
+    </CreateItem>
+    <Message Text="Creating esriAddinX file..." Importance="high" />
+    <Delete Files="$(ZipDir)$(AssemblyName).esriAddinX" />
+    <Exec Command="powershell Compress-Archive -Path &quot;$(ZipDir)Install\*&quot; -DestinationPath &quot;$(ZipDir)$(AssemblyName).zip&quot; -Force" />
+    <Move SourceFiles="$(ZipDir)$(AssemblyName).zip" DestinationFiles="$(ZipDir)$(AssemblyName).esriAddinX" />
+    <RemoveDir Directories="$(ZipDir)Install" />
+    
+    <!-- Deploy to ArcGIS Pro Add-Ins folder -->
+    <PropertyGroup>
+      <ArcGISProAddInFolder>%LOCALAPPDATA%\ESRI\ArcGISPro\AddIns</ArcGISProAddInFolder>
+    </PropertyGroup>
+    <Message Text="Deploying add-in to $(ArcGISProAddInFolder)..." Importance="high" />
+    <Copy SourceFiles="$(ZipDir)$(AssemblyName).esriAddinX" DestinationFolder="$(ArcGISProAddInFolder)" ContinueOnError="true" />
+    <Message Text="Add-in deployed. Restart ArcGIS Pro to see changes." Importance="high" />
+  </Target>
+
+</Project>
