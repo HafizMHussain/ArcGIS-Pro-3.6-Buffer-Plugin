@@ -61,7 +61,7 @@ BufferToolPlugin/
 1. **Open the Project**
    ```
    File → Open → Project/Solution
-   Navigate to: c:\Users\Hafiz\Desktop\Github\ArcGIS Pro Plugin\BufferToolPlugin\BufferToolPlugin.csproj
+   Navigate to: BufferToolPlugin.csproj
    ```
 
 2. **Restore NuGet Packages** (if needed)
@@ -81,7 +81,7 @@ BufferToolPlugin/
 
 ```powershell
 # Navigate to project directory
-cd "c:\Users\Hafiz\Desktop\Github\ArcGIS Pro Plugin\BufferToolPlugin"
+cd path\to\BufferToolPlugin
 
 # Build Debug version
 dotnet build -c Debug
